@@ -1,49 +1,39 @@
 import mariadb
 import sys
+import mariadb
+import sys
+import requests
+import calendar
+from datetime import date
+from operator import itemgetter
 
 # connect to MariaDB Platform
 try:
     conn = mariadb.connect(
-        user="root",
-        password="root",
-        host="172.17.145.200",
+        user="flask",
+        password="flaskpass",
+        host="192.168.146.162",
         port=3306,
-        database="test"
+        database="test_flask"
     )
 except mariadb.Error as e:
     print(f"Error connecting to MariaDB Platform: {e}")
     sys.exit(1)
     
+cur = conn.cursor()    
+
+list_current_date = list(map(int, str(date.today()).split('-')))
+count_days_month = calendar.monthrange(list_current_date[0], list_current_date[1])[1]
+today = list_current_date[2]
+
+if int(today) + 5 > int(count_days_month):
+    ends_range = count_days_month + 1
+else:
+    ends_range = int(today) + 5
     
-cur = conn.cursor()
+names_table = [f'{list_current_date[0]}_{list_current_date[1]}_{day}' for day in range(1,ends_range)]
 
-# cur.execute(f'''CREATE TABLE test(id VARCHAR(20), weather_state_name VARCHAR(20),
-#                 wind_direction_compass VARCHAR(20), created VARCHAR(40), applicable_date VARCHAR(20),
-#                 min_temp VARCHAR(20), max_temp VARCHAR(20), the_temp VARCHAR(20))''')
+for name in names_table: 
+    cur.execute(f'DROP TABLE {name}')
 
-id = 'id1'
-weather_state_name = 'weather_state_name2'
-wind_direction_compass = 'wind3'
-created = 'created4'
-applicable_date = 'applicable_date5'
-min_temp = '8887'
-max_temp = 'max_temp7'
-the_temp = 'the_temp8'
-
-cur.execute(f'''UPDATE test SET
-            weather_state_name='{weather_state_name}',
-            wind_direction_compass='{wind_direction_compass}',
-            created='{created}',
-            applicable_date='{applicable_date}',
-            min_temp='{min_temp}',
-            the_temp='{the_temp}' WHERE id='{id}'
-            ''')
-
-
-# cur.execute(f'''INSERT INTO test (id, weather_state_name,
-#                             wind_direction_compass, created, applicable_date, min_temp,
-#                             max_temp, the_temp) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)''', (id,
-#                             weather_state_name, wind_direction_compass,
-#                             created, applicable_date, min_temp,
-#                             max_temp, the_temp))
 conn.commit();
