@@ -2,6 +2,7 @@
 <html lang="ru" style="
 background-color: #00a6ff1a;">
 <head>
+    <link href="/favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,31 +10,10 @@ background-color: #00a6ff1a;">
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-  <script type=text/javascript>
-        $(function() {
-          $('#refresh_button').bind('click', function() {
-          $('#refresh_button').text('Идёт обновление базы, подождите. Это занимает примерно 10-20 сек');
-          $('#refresh_button').attr('disabled','disabled');
-
-    $.ajax({
-            url: '/update',
-            async: true,
-            type: "get",
-            success: function(data){
-            alert("Данные обновлены!");
-            location.reload();
-            }
-            });
-            return false;
-          });
-        });
-  </script>
-
   <div class="menu">
     <ul class="selected">                                                                         
       <li><a href="/">HOME</a></li>
-      <li><button class="btn btn-dark mt-4" id='refresh_button'>UPDATE</button></li>
+      <li><a href="/update">UPDATE</a></li>
     </ul>
   </div>
     {% block body %}{% endblock %}

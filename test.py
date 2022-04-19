@@ -33,6 +33,18 @@ else:
     
 names_table = [f'{list_current_date[0]}_{list_current_date[1]}_{day}' for day in range(1,ends_range)]
 
+
+# for i in names_table:
+#     cur.execute(f"SHOW TABLES LIKE '{i}'")
+#     print(cur.fetchall())
+#     if cur.fetchall() == 0:
+#         print('yes')
+    # if i in cur.fetchall()[0]:
+    #     print('yes')
+    # else:
+    #     print('no')
+
+
 for name in names_table: 
     cur.execute(f'DROP TABLE {name}')
 

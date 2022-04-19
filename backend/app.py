@@ -6,8 +6,30 @@ import os
 import requests
 import calendar
 import json
-from datetime import date
+import time
+from datetime import date, timedelta
 from operator import itemgetter
+
+flask_user = 'root'
+flask_password = 'flaskpass'
+flask_db = 'database-diploma'
+flask_database = 'test_flask'
+
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI']= f"mysql+mysqldb://{flask_user}:{flask_password}@{flask_db}:3306/{flask_database}"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+migrate = Migrate(app, db)
+
+
+conn = mariadb.connect(
+    user=flask_user,
+    password=flask_password,
+    host=flask_db,
+    port=3306,
+    database=flask_database
+    )
+cur = conn.cursor()
 
 
 def sorted_ends(s):
@@ -28,35 +50,34 @@ else:
 names_table = [f'{list_current_date[0]}_{list_current_date[1]}_{day}' for day in range(1,ends_range)]
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI']= "mysql+mysqldb://flask:flaskpass@192.168.146.162:3306/test_flask"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-db = SQLAlchemy(app)
-migrate = Migrate(app, db)
-
-
-conn = mariadb.connect(
-    user="flask",
-    password="flaskpass",
-    host="192.168.146.162",
-    port=3306,
-    database="test_flask"
-    )
-cur = conn.cursor()
-
-
 def class_db(db, names_table):
     for name in names_table:
-        class date_tables(db.Model):
-            __tablename__ = name
-            id = db.Column(db.String(20), primary_key=True) 
-            weather_state_name = db.Column(db.String(20), nullable=True)
-            wind_direction_compass = db.Column(db.String(20), nullable=True) 
-            created = db.Column(db.String(40), nullable=True) 
-            applicable_date = db.Column(db.DateTime(20), nullable=False)
-            min_temp = db.Column(db.String(20), nullable=True) 
-            max_temp = db.Column(db.String(20), nullable=True) 
-            the_temp = db.Column(db.String(20), nullable=True)  
+        cur.execute(f"SHOW TABLES LIKE '{name}'")
+        try: 
+            if name not in cur.fetchall()[0]:
+                class date_tables(db.Model):
+                    __tablename__ = name
+                    id = db.Column(db.String(20), primary_key=True) 
+                    weather_state_name = db.Column(db.String(20), nullable=True)
+                    wind_direction_compass = db.Column(db.String(20), nullable=True) 
+                    created = db.Column(db.String(40), nullable=True) 
+                    applicable_date = db.Column(db.DateTime(20), nullable=False)
+                    min_temp = db.Column(db.String(20), nullable=True) 
+                    max_temp = db.Column(db.String(20), nullable=True) 
+                    the_temp = db.Column(db.String(20), nullable=True)
+            else:
+                continue  
+        except IndexError:
+                class date_tables(db.Model):
+                    __tablename__ = name
+                    id = db.Column(db.String(20), primary_key=True) 
+                    weather_state_name = db.Column(db.String(20), nullable=True)
+                    wind_direction_compass = db.Column(db.String(20), nullable=True) 
+                    created = db.Column(db.String(40), nullable=True) 
+                    applicable_date = db.Column(db.DateTime(20), nullable=False)
+                    min_temp = db.Column(db.String(20), nullable=True) 
+                    max_temp = db.Column(db.String(20), nullable=True) 
+                    the_temp = db.Column(db.String(20), nullable=True)
     db.create_all()
 
 
@@ -85,11 +106,10 @@ def update_database(names_table, conn, cur):
                 conn.commit();
             except mariadb.Error as mariadb_error:
                 continue
-                print("MariaDB error: " + str(mariadb_error))
 
 
 class_db(db, names_table)
-update_database(names_table, conn, cur)
+# update_database(names_table, conn, cur)
 
 
 @app.route('/api/name_tables')
@@ -109,10 +129,14 @@ def table_of_date(date):
 
 @app.route('/api/update')
 def update():
+    start_time = time.monotonic()
     class_db(db, names_table)
     update_database(names_table, conn, cur)
-    return 'ok'
+    end_time = time.monotonic()
+    count_time = timedelta(seconds=end_time - start_time)
+    json_res = json.dumps(count_time, indent=4, sort_keys=True, default=str)
+    return json_res
 
 
 if __name__ == '__main__':
-    app.run(port=3000)
+    app.run(host='0.0.0.0', port=3000)

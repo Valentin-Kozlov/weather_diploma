@@ -7,20 +7,20 @@ COPY requirements.txt .
 RUN adduser -D user
 
 RUN apk add --no-cache \
-    gcc \
-    musl-dev \
-    mariadb-dev \
+    # gcc \
+    # musl-dev \
+    # mariadb-dev \
     bash
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
 USER user
 
-ENV FLASK_APP app.py
+ENV FLASK_APP frontend.py
 ENV PYTHONUNBUFFERED 1
 ENV TZ=Asia/Yekaterinburg
 
-EXPOSE 3000
+EXPOSE 5000
 
 COPY --chmod=755 . .
 
