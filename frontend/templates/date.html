@@ -10,7 +10,7 @@
 <ol class="rounded">
     {% for date in result_tables %}
     
-        <li><p class="six"><a href='/{{ date }}'>{{ date }}</a></p></li>
+        <li><p class="six"><a href='/{{ date[0] }}'>{{ date[1] }}</a></p></li>
 
     {% endfor %}
 </ol>
