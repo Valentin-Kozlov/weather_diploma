@@ -1,14 +1,14 @@
-variable "access_key" {
-  type        = string
-  description = "Please enter your access key"
-  sensitive   = true
-}
+# variable "access_key" {
+#   type        = string
+#   description = "Please enter your access key"
+#   sensitive   = true
+# }
 
-variable "secret_key" {
-  type        = string
-  description = "Please enter your secret key"
-  sensitive   = true
-}
+# variable "secret_key" {
+#   type        = string
+#   description = "Please enter your secret key"
+#   sensitive   = true
+# }
 
 variable "region_name" {
   type        = string
@@ -22,8 +22,8 @@ variable "availability_zones" {
 }
 
 variable "cluster_name" {
-  type = string
-  default = "eks-for-diploma"
+  type        = string
+  default     = "weather-cluster2"
   description = "Please enter your EKS name"
 }
 
@@ -34,22 +34,22 @@ variable "vpc_cidr" {
 }
 
 variable "private_subnets" {
-  type = list(string)
+  type        = list(string)
   description = "Please enter PRIVATE subnets"
-  default = [ "10.0.1.0/24", "10.0.2.0/24" ]  
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "public_subnets" {
-  type = list(string)
+  type        = list(string)
   description = "Please enter PUBLIC subnets"
-  default = [ "10.0.101.0/24", "10.0.102.0/24" ]  
+  default     = ["10.0.101.0/24", "10.0.102.0/24"]
 }
 
 variable "common_tags" {
   type        = map(any)
   description = "Please enter your common tags for services"
   default = {
-    Owners     = "Valentin Kozlov"
-    Builder    = "by Terraform"
+    Owners  = "Valentin Kozlov"
+    Builder = "by Terraform"
   }
 }
