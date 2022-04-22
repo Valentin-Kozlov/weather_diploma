@@ -53,6 +53,7 @@ resource "aws_eks_node_group" "private-nodes" {
   labels = {
     role = "general"
   }
+  version = "1.21"
   depends_on = [
     aws_iam_role_policy_attachment.nodes-AmazonEKSWorkerNodePolicy,
     aws_iam_role_policy_attachment.nodes-AmazonEKS_CNI_Policy,
