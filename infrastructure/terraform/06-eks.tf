@@ -45,6 +45,6 @@ resource "aws_eks_cluster" "weather-cluster" {
   }
 
   depends_on = [aws_iam_role_policy_attachment.weather-AmazonEKSClusterPolicy]
-    tags = merge(var.common_tags,
+  tags = merge(var.common_tags,
   { Name = "eks-diploma" })
 }

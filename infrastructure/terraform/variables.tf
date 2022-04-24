@@ -23,7 +23,7 @@ variable "availability_zones" {
 
 variable "cluster_name" {
   type        = string
-  default     = "weather-cluster2"
+  default     = "whatweather-cluster"
   description = "Please enter your EKS name"
 }
 
@@ -52,4 +52,45 @@ variable "common_tags" {
     Owners  = "Valentin Kozlov"
     Builder = "by Terraform"
   }
+}
+
+variable "db_engine" {
+  description = "Please enter engine for your DB"
+  type        = string
+  default     = "mariadb"
+}
+
+variable "db_engine_version" {
+  description = "Please enter engine version for your DB"
+  type        = string
+  default     = "10.6.7"
+}
+
+variable "db_instance_class" {
+  description = "Please enter instance type for your DB"
+  type        = string
+  default     = "db.t3.micro"
+}
+
+variable "db_name" {
+  description = "Please enter name your DB"
+  type        = string
+}
+
+variable "db_username" {
+  description = "Please enter your username for DB"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_password" {
+  description = "Please enter your password for DB user"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_port" {
+  description = "Please enter port for DB"
+  type        = string
+  default     = "3306"
 }

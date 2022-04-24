@@ -6,7 +6,7 @@ resource "aws_subnet" "private-subnet-A" {
   tags = merge(var.common_tags,
     { Name                              = "private-subnets-${var.availability_zones[0]}",
       "kubernetes.io/role/internal-elb" = "1",
-  "kubernetes.io/cluster/cluster-weather" = "owned" })
+  "kubernetes.io/cluster/${var.cluster_name}" = "owned" })
 }
 
 resource "aws_subnet" "private-subnet-B" {
@@ -28,8 +28,8 @@ resource "aws_subnet" "public-subnet-A" {
 
   tags = merge(var.common_tags,
     { Name                              = "public-subnets-${var.availability_zones[0]}",
-      "kubernetes.io/role/internal-elb" = "1",
-  "kubernetes.io/cluster/cluster-weather" = "owned" })
+      "kubernetes.io/role/elb" = "1",
+  "kubernetes.io/cluster/${var.cluster_name}" = "owned" })
 }
 
 resource "aws_subnet" "public-subnet-B" {
@@ -40,6 +40,6 @@ resource "aws_subnet" "public-subnet-B" {
 
   tags = merge(var.common_tags,
     { Name                              = "public-subnets-${var.availability_zones[1]}",
-      "kubernetes.io/role/internal-elb" = "1",
-  "kubernetes.io/cluster/cluster-weather" = "owned" })
+      "kubernetes.io/role/elb" = "1",
+  "kubernetes.io/cluster/${var.cluster_name}" = "owned" })
 }

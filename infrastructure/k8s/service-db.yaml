@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-diploma
+spec:
+  externalName: db-dev-20220424094848279700000001.cscmyoshn6pi.eu-central-1.rds.amazonaws.com
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  sessionAffinity: None
+  type: ExternalName

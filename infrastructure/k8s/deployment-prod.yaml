@@ -1,0 +1,133 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-front-prod-main
+  labels:
+    app   : weather-front
+    owners: ValentinKozlov
+    env   : prod
+    state : main
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app   : weather-front
+      owners: ValentinKozlov
+      env   : prod
+      state : main
+  template:
+    metadata:
+      labels:
+        app   : weather-front
+        owners: ValentinKozlov
+        env   : prod
+        state : main
+    spec:
+      containers:
+      - name : weather-front
+        image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-front:latest
+        ports:
+        - containerPort: 5000
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-prod-main
+  labels:
+    app   : front
+    owners: ValentinKozlov
+    env   : prod
+    state : main
+spec:
+  type: ClusterIP
+  selector:
+    env: prod
+    app: weather-front
+  ports:
+    - protocol  : TCP
+      port      : 5000
+      targetPort: 5000
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-back-prod-main
+  labels:
+    app   : weather-back
+    owners: ValentinKozlov
+    env   : prod
+    state : main
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app   : weather-back
+      owners: ValentinKozlov
+      env   : prod
+      state : main
+  template:
+    metadata:
+      labels:
+        app   : weather-back
+        owners: ValentinKozlov
+        env   : prod
+        state : main
+    spec:
+      containers:
+      - name : weather-back
+        image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:latest
+        ports:
+        - containerPort: 3000
+        resources:
+          limits:
+            cpu: "200m"
+            memory: "200Mi"
+          requests:
+            cpu: "100m"
+            memory: "100Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-diploma
+  labels:
+    app   : back
+    owners: ValentinKozlov
+    env   : prod
+    state : main
+spec:
+  type: ClusterIP
+  selector:
+    env: prod
+    app: weather-back
+  ports:
+    - protocol  : TCP
+      port      : 3000
+      targetPort: 3000
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-nginx-main
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+spec:
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+             name: front-prod-main
+             port: 
+                number: 80
