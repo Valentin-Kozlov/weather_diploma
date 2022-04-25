@@ -1,4 +1,4 @@
-FROM python:alpine3.14
+FROM python:alpine3.15
 
 WORKDIR /usr/src/app
 
@@ -6,11 +6,7 @@ COPY requirements.txt .
 
 RUN adduser -D user
 
-RUN apk add --no-cache \
-    # gcc \
-    # musl-dev \
-    # mariadb-dev \
-    bash
+RUN apk upgrade --available --no-cache && apk add bash --no-cache
 
 RUN pip install --upgrade pip && pip install -r requirements.txt
 

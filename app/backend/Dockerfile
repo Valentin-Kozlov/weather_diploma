@@ -1,4 +1,4 @@
-FROM python:alpine3.14
+FROM python:alpine3.15
 
 WORKDIR /usr/src/app
 
@@ -6,6 +6,7 @@ COPY requirements.txt .
 
 RUN adduser -D user
 
+RUN apk upgrade --available --no-cache
 RUN apk add --no-cache \
     gcc \
     musl-dev \
