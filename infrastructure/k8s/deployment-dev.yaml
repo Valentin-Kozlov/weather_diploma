@@ -1,17 +1,18 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: prod
+  name: dev
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: weather-front-prod-main
+  name: weather-front-dev-main
+  namespace: dev
   labels:
     app   : weather-front
     owners: ValentinKozlov
-    env   : prod
+    env   : dev
     state : main
 spec:
   replicas: 2
@@ -19,19 +20,19 @@ spec:
     matchLabels:
       app   : weather-front
       owners: ValentinKozlov
-      env   : prod
+      env   : dev
       state : main
   template:
     metadata:
       labels:
         app   : weather-front
         owners: ValentinKozlov
-        env   : prod
+        env   : dev
         state : main
     spec:
       containers:
       - name : weather-front
-        image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-front:latest
+        image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-front:v1
         ports:
         - containerPort: 5000
         resources:
@@ -45,16 +46,17 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: front-prod-main
+  name: front-dev-main
+  namespace: dev
   labels:
     app   : front
     owners: ValentinKozlov
-    env   : prod
+    env   : dev
     state : main
 spec:
   type: ClusterIP
   selector:
-    env: prod
+    env: dev
     app: weather-front
   ports:
     - protocol  : TCP
@@ -66,31 +68,32 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: weather-back-prod-main
+  name: weather-back-dev-main
+  namespace: dev
   labels:
     app   : weather-back
     owners: ValentinKozlov
-    env   : prod
+    env   : dev
     state : main
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app   : weather-back
       owners: ValentinKozlov
-      env   : prod
+      env   : dev
       state : main
   template:
     metadata:
       labels:
         app   : weather-back
         owners: ValentinKozlov
-        env   : prod
+        env   : dev
         state : main
     spec:
       containers:
       - name : weather-back
-        image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:latest
+        image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:v1
         ports:
         - containerPort: 3000
         resources:
@@ -105,15 +108,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: backend-diploma
+  namespace: dev
   labels:
     app   : back
     owners: ValentinKozlov
-    env   : prod
+    env   : dev
     state : main
 spec:
   type: ClusterIP
   selector:
-    env: prod
+    env: dev
     app: weather-back
   ports:
     - protocol  : TCP
@@ -124,7 +128,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ingress-nginx-main
-  namespace: prod
+  namespace: dev
   annotations:
     kubernetes.io/ingress.class: contour
 spec:
@@ -135,6 +139,26 @@ spec:
         pathType: Prefix
         backend:
           service:
-             name: front-prod-main
+             name: front-dev-main
              port: 
-                number: 80
+                number: 5000
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: front-diploma-lb
+#   namespace: dev
+#   labels:
+#     app   : front
+#     owners: ValentinKozlov
+#     env   : dev
+#     state : main
+# spec:
+#   type: LoadBalancer
+#   selector:
+#     env: dev
+#     app: weather-front
+#   ports:
+#     - protocol  : TCP
+#       port      : 80
+#       targetPort: 5000

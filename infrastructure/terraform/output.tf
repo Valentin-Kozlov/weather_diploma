@@ -12,3 +12,13 @@ output "dns_name_db_dev" {
   description = "dns db dev"
   value       = aws_db_instance.db_dev.address
 }
+
+output "repository_url_front" {
+  description = "repository url front"
+  value       = aws_ecr_repository.front.repository_url
+}
+
+output "repository_url_back" {
+  description = "repository url back"
+  value       = aws_ecr_repository.back.repository_url
+}

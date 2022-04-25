@@ -21,6 +21,12 @@ variable "availability_zones" {
   default = ["eu-central-1a", "eu-central-1b"]
 }
 
+variable "name_project" {
+  type        = string
+  default     = "whatweather"
+  description = "Please enter your project name"
+}
+
 variable "cluster_name" {
   type        = string
   default     = "whatweather-cluster"

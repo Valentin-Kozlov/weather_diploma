@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: database-diploma
+  namespace: dev
+  labels:
+    app   : db
+    owners: ValentinKozlov
+    env   : dev
+    state : main
+spec:
+  externalName: db-dev-20220425084539483400000006.cscmyoshn6pi.eu-central-1.rds.amazonaws.com
+  ports:
+  - port: 3306
+    protocol: TCP
+    targetPort: 3306
+  sessionAffinity: None
+  type: ExternalName

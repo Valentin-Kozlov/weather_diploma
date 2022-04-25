@@ -27,7 +27,7 @@ resource "aws_subnet" "public-subnet-A" {
   map_public_ip_on_launch = true
 
   tags = merge(var.common_tags,
-    { Name                              = "public-subnets-${var.availability_zones[0]}",
+    { Name                     = "public-subnets-${var.availability_zones[0]}",
       "kubernetes.io/role/elb" = "1",
   "kubernetes.io/cluster/${var.cluster_name}" = "owned" })
 }
@@ -39,7 +39,7 @@ resource "aws_subnet" "public-subnet-B" {
   map_public_ip_on_launch = true
 
   tags = merge(var.common_tags,
-    { Name                              = "public-subnets-${var.availability_zones[1]}",
+    { Name                     = "public-subnets-${var.availability_zones[1]}",
       "kubernetes.io/role/elb" = "1",
   "kubernetes.io/cluster/${var.cluster_name}" = "owned" })
 }
