@@ -3,7 +3,21 @@ kind: Namespace
 metadata:
   name: dev
 ---
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: weather-front-dev-main
+  namespace: dev
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: weather-front-dev-main
+  minReplicas: 1
+  maxReplicas: 3
+  targetCPUUtilizationPercentage: 20
 
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -15,13 +29,17 @@ metadata:
     env   : dev
     state : main
 spec:
-  replicas: 2
   selector:
     matchLabels:
       app   : weather-front
       owners: ValentinKozlov
       env   : dev
       state : main
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -33,6 +51,7 @@ spec:
       containers:
       - name : weather-front
         image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-front:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
         resources:
@@ -63,7 +82,17 @@ spec:
       port      : 5000
       targetPort: 5000
 
-
+---
+  apiVersion: v1
+  kind: Secret
+  metadata:
+    name: db-dev
+    namespace: dev
+  type: Opaque
+  data:
+    username_db: cm9vdA==
+    password_db: Zmxhc2twYXNz
+    database: dGVzdF9mbGFzaw==
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -76,13 +105,18 @@ metadata:
     env   : dev
     state : main
 spec:
-  replicas: 3
+  replicas: 2
   selector:
     matchLabels:
       app   : weather-back
       owners: ValentinKozlov
       env   : dev
       state : main
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -94,6 +128,7 @@ spec:
       containers:
       - name : weather-back
         image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         resources:
@@ -103,6 +138,9 @@ spec:
           requests:
             cpu: "100m"
             memory: "100Mi"
+        envFrom:
+          - secretRef:
+              name: db-dev
 ---
 apiVersion: v1
 kind: Service
@@ -142,6 +180,7 @@ spec:
              name: front-dev-main
              port: 
                 number: 5000
+
 # ---
 # apiVersion: v1
 # kind: Service

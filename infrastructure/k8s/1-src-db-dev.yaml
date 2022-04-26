@@ -9,7 +9,7 @@ metadata:
     env   : dev
     state : main
 spec:
-  externalName: db-dev-20220425084539483400000006.cscmyoshn6pi.eu-central-1.rds.amazonaws.com
+  externalName: db-dev-20220426082447732200000006.cscmyoshn6pi.eu-central-1.rds.amazonaws.com
   ports:
   - port: 3306
     protocol: TCP

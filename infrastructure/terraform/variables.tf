@@ -1,15 +1,3 @@
-# variable "access_key" {
-#   type        = string
-#   description = "Please enter your access key"
-#   sensitive   = true
-# }
-
-# variable "secret_key" {
-#   type        = string
-#   description = "Please enter your secret key"
-#   sensitive   = true
-# }
-
 variable "region_name" {
   type        = string
   description = "Please enter your region name for deploy"

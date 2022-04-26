@@ -10,10 +10,11 @@ import time
 from datetime import date, timedelta
 from operator import itemgetter
 
-flask_user = 'root'
-flask_password = 'flaskpass'
+
+flask_user = os.getenv('username_db')
+flask_password = os.getenv('password_db')
 flask_db = 'database-diploma'
-flask_database = 'test_flask'
+flask_database = os.getenv('database')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI']= f"mysql+mysqldb://{flask_user}:{flask_password}@{flask_db}:3306/{flask_database}"
