@@ -2,8 +2,9 @@ stage: dev
 
 deployment:
   replicas: 2
-  image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:v1
+  image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:v2
   portsContainer: 3000
+  ports_metrics: 8000
   resources:
     limits:
       cpu: "200m"
@@ -14,3 +15,4 @@ deployment:
 
 service:
   port: 3000
+  ports_metrics: 8000

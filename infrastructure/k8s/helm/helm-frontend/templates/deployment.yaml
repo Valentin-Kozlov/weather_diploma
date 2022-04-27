@@ -5,12 +5,12 @@ metadata:
   namespace: {{ .Values.stage }}
   labels:
     app   : {{ .Chart.Name }}
-    env   : {{ .Values.stage }}
+    env   : {{ .Values.stage }}   
 spec:
   selector:
     matchLabels:
       app   : {{ .Chart.Name }}
-      env   : {{ .Values.stage }}
+      env   : {{ .Values.stage }}      
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app   : {{ .Chart.Name }}
-        env   : {{ .Values.stage }}
+        env   : {{ .Values.stage }}        
     spec:
       containers:
       - name : {{ .Chart.Name }}
@@ -28,10 +28,11 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.deployment.portsContainer }}
+        - containerPort: {{ .Values.deployment.ports_metrics}}
         resources:
           limits:
             cpu: {{ .Values.deployment.resources.limits.cpu }}
             memory: {{ .Values.deployment.resources.limits.memory }}
           requests:
             cpu: {{ .Values.deployment.resources.requests.cpu }}
-            memory: {{ .Values.deployment.resources.request.memory }}
+            memory: {{ .Values.deployment.resources.requests.memory }}

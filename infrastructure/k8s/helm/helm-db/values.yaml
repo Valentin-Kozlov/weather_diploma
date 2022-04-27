@@ -1,10 +1,10 @@
 stage: dev
 
 service:
-  externalName: db-dev-20220426082447732200000006.cscmyoshn6pi.eu-central-1.rds.amazonaws.com
+  externalName: db-dev-20220427120643593300000007.cscmyoshn6pi.eu-central-1.rds.amazonaws.com
 
 secret:
-  user: test_need_base64
-  pass: test_need_base64
-  db: test_need_base64
-  name_service_db : test_need_base64
+  user: cm9vdA==
+  pass: Zmxhc2twYXNz
+  db: dGVzdF9mbGFzaw==
+  name_service_db : 'aGVsbS13aGF0d2VhdGhlci1kYg=='

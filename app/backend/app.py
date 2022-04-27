@@ -9,7 +9,7 @@ import json
 import time
 from datetime import date, timedelta
 from operator import itemgetter
-
+from prometheus_flask_exporter import PrometheusMetrics
 
 flask_user = os.getenv('username_db')
 flask_password = os.getenv('password_db')
@@ -21,6 +21,9 @@ app.config['SQLALCHEMY_DATABASE_URI']= f"mysql+mysqldb://{flask_user}:{flask_pas
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+
+metrics = PrometheusMetrics(app, path=None)
+metrics.start_http_server(8000)
 
 
 conn = mariadb.connect(

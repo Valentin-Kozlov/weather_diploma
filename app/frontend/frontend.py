@@ -1,10 +1,10 @@
 from flask import Flask, render_template, send_from_directory
+from prometheus_flask_exporter import PrometheusMetrics
 import os
 import requests
 
-# address_back = '127.0.0.1:3000'
-# address_back = os.environ('ADDRESS_BACK') 
-address_back = 'backend-diploma:3000'
+
+address_back = 'helm-whatweather-back:3000'
 
 def format_date(date):
     date_form = date.replace('_', '.').split('.')
@@ -14,7 +14,8 @@ def format_date(date):
     return date_f
 
 app = Flask(__name__)
-
+metrics = PrometheusMetrics(app, path=None)
+metrics.start_http_server(8000)
 
 @app.route('/', methods=['GET'])
 def dates():

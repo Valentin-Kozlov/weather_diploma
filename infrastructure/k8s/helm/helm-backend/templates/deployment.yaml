@@ -29,13 +29,14 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.deployment.portsContainer }}
-         resources:
+        - containerPort: {{ .Values.deployment.ports_metrics}}
+        resources:
           limits:
             cpu: {{ .Values.deployment.resources.limits.cpu }}
             memory: {{ .Values.deployment.resources.limits.memory }}
           requests:
             cpu: {{ .Values.deployment.resources.requests.cpu }}
-            memory: {{ .Values.deployment.resources.request.memory }}
+            memory: {{ .Values.deployment.resources.requests.memory }}
         envFrom:
           - secretRef:
               name: db-dev

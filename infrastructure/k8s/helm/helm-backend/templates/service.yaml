@@ -4,7 +4,7 @@ metadata:
   name: {{ .Chart.Name }}
   namespace: {{ .Values.stage }}
   labels:
-    app   : {{ .Values.app }}
+    app   : {{ .Chart.Name }}
     env   : {{ .Values.stage }}
 spec:
   type: ClusterIP
@@ -13,5 +13,10 @@ spec:
     app: {{ .Chart.Name }}
   ports:
     - protocol  : TCP
+      name      : main
       port      : {{ .Values.service.port }}
       targetPort: {{ .Values.deployment.portsContainer }}
+    - protocol  : TCP
+      name      : metrics
+      port      : {{ .Values.service.ports_metrics}}
+      targetPort: {{ .Values.deployment.ports_metrics}}
