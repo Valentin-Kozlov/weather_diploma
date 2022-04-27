@@ -7,7 +7,6 @@ metadata:
     app   : {{ .Chart.Name }}
     env   : {{ .Values.stage }}
 spec:
-  replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
       app   : {{ .Chart.Name }}
@@ -29,13 +28,10 @@ spec:
         imagePullPolicy: Always
         ports:
         - containerPort: {{ .Values.deployment.portsContainer }}
-         resources:
+        resources:
           limits:
             cpu: {{ .Values.deployment.resources.limits.cpu }}
             memory: {{ .Values.deployment.resources.limits.memory }}
           requests:
             cpu: {{ .Values.deployment.resources.requests.cpu }}
             memory: {{ .Values.deployment.resources.request.memory }}
-        envFrom:
-          - secretRef:
-              name: db-dev

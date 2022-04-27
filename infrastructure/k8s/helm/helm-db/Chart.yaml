@@ -1,13 +1,14 @@
 apiVersion : v2
-name       : helm-whatweather-back
+name       : helm-whatweather-db
 type       : application
-description: Epam24 Diploma Backend
+description: Epam24 Diploma DB
 version    : 1.0.0
 appVersion : "1.0.0"
 
 
 keywords:
-  - deployment
+  - namespace
+  - secret
   - service
 
 

@@ -1,14 +1,17 @@
 apiVersion : v2
-name       : helm-whatweather-back
+name       : helm-whatweather-front
 type       : application
-description: Epam24 Diploma Backend
+description: Epam24 Diploma Frontend
 version    : 1.0.0
 appVersion : "1.0.0"
 
 
 keywords:
+  - namespace
   - deployment
+  - hpa
   - service
+  - ingress
 
 
 maintainers:

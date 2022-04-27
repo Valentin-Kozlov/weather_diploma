@@ -13,7 +13,7 @@ from operator import itemgetter
 
 flask_user = os.getenv('username_db')
 flask_password = os.getenv('password_db')
-flask_db = 'database-diploma'
+flask_db = os.getenv('name_service_db')
 flask_database = os.getenv('database')
 
 app = Flask(__name__)

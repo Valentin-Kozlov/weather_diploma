@@ -1,2 +1,16 @@
 stage: dev
-owners: ValentinKozlov
+
+deployment:
+  replicas: 2
+  image: 280720853053.dkr.ecr.eu-central-1.amazonaws.com/whatweather-back:v1
+  portsContainer: 3000
+  resources:
+    limits:
+      cpu: "200m"
+      memory: "200Mi"
+    requests:
+      cpu: "100m"
+      memory: "100Mi"
+
+service:
+  port: 3000
